@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// точка
 struct  Point{
     double x;
     double y;
@@ -20,7 +21,7 @@ void printPoint(const Point &p){
 
 
 
-
+// круг
 struct  Circle{
     Point center;
     double r;
@@ -44,7 +45,7 @@ double areaCircle(const Circle &c){
 
 
 
-
+// квадрат
 struct Square{
     Point top;
     double side;
@@ -68,17 +69,42 @@ double areaSquare(const Square &s){
 
 
 
-
-
-
-
-
-double point_in_circle(const Point &p, const Circle &c){
+// вхождение без границ
+bool point_in_circle(const Point &p, const Circle &c){
     double dx = p.x - c.center.x;
     double dy = p.y - c.center.y;
     double distance = sqrt(dx * dx + dy * dy);
-    return distance <= c.r;
+    return distance < c.r;
 }
+
+
+bool point_in_square(const Point &p, const Square &s){
+    return (p.x > s.top.x and p.x < (s.top.x + s.side)) and 
+    (p.y < s.top.y and p.y > (s.top.y - s.side));
+}
+
+
+
+
+// вхождение на границы
+bool border_point_in_circle(const Point &p, const Circle &c){
+    double dx = p.x - c.center.x;
+    double dy = p.y - c.center.y;
+    double distance = sqrt(dx * dx + dy * dy);
+    return distance == c.r;
+}
+
+
+bool border_point_in_square(const Point &p, const Square &s){
+    return (
+        ((p.x >= s.top.x and p.x <= (s.top.x + s.side)) and 
+                (p.y == s.top.y or p.y == (s.top.y - s.side))) or 
+        ((p.y <= s.top.y and p.y >= (s.top.y - s.side)) and
+                (p.x == s.top.x or p.x == (s.top.x + s.side)))
+            );
+}
+
+// Пересечение фигур ...
 
 
 
@@ -90,9 +116,10 @@ int main(){
     Point a;
     readPoint(a);
     printPoint(a);
-    cout << endl;
 
-    cout << "Круг:" << endl;
+
+
+    cout << "Круг: (центр, радиус)" << endl;
     Circle b;
     readCircle(b);
     printCircle(b);
@@ -101,7 +128,7 @@ int main(){
 
     
 
-    cout << "Квадрат:" << endl;
+    cout << "Квадрат: (левый верхний угол, длина стороны)" << endl;
     Square c;
     readSquare(c);
     printSquare(c);
@@ -109,11 +136,41 @@ int main(){
     cout << "Площадь квадрата: " << areaSquare(c) << endl;
 
 
-    cout << "Принадлежность точки фигуре:" << endl;
+
+    cout << "Принадлежность точки фигуре (без границ):" << endl;
+
     cout << "Точка в круг: ";
     if (point_in_circle(a, b) == true){
         cout << "Принадлежит"  << endl;
     } else {
         cout << "Не принадлежит"  << endl;
     }
+
+    cout << "Точка в квадрат: ";
+    if (point_in_square(a, c) == true){
+        cout << "Принадлежит"  << endl;
+    } else {
+        cout << "Не принадлежит"  << endl;
+    }
+
+
+
+    cout << "Нахождение точки на контуре (граница)" << endl;
+    
+    cout << "Точка круг граница: ";
+    if (border_point_in_circle(a, b) == true){
+        cout << "На границе груга" << endl;
+    } else {
+        cout << "Не на границе круга" << endl;
+    }
+
+    cout << "Точка квадрат граница: ";
+    if (border_point_in_square(a, c) == true){
+        cout << "На границе квадрата" << endl;
+    } else {
+        cout << "Не на границе квадрата" << endl;
+    }
+    
+
+
 }
