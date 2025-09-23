@@ -6,7 +6,7 @@
 using namespace std;
 
 // точка
-struct  Point{
+struct Point{
     double x;
     double y;
 };
@@ -104,7 +104,7 @@ bool border_point_in_square(const Point &p, const Square &s){
             );
 }
 
-// Пересечение фигур ...
+// Пересечение фигур
 
 bool intersection_of_circles(const Circle &c, const Circle &c2){
     double dx = c.center.x - c2 .center.x;
@@ -131,6 +131,91 @@ bool intersection_of_square(const Square &s, const Square &s2){
     return 1; // пересекаются 
 }
 
+bool intersection_circle_and_square(const Circle &c, const Square &s){
+    if (point_in_square(c.center, s) == true){ // центр круга внутри квадрата
+        return true;
+    }
+
+    Point corners[4] = { // вершины квадрата внутри круга
+        {s.top.x, s.top.y},
+        {s.top.x + s.side, s.top.y},
+        {s.top.x, s.top.y - s.side},
+        {s.top.x + s.side, s.top.y - s.side}
+    };
+    for (int i = 0; i < 4; i += 1) {
+        if (point_in_circle(corners[i], c)){
+            return true;
+        }
+    }
+
+    // расстояние от центра круга до ближайшей стороны квадрата
+    double nearestX = max(s.top.x, min(c.center.x, s.top.x + s.side));
+    double nearestY = max(s.top.y - s.side, min(c.center.y, s.top.y));
+    double dx = c.center.x - nearestX;
+    double dy = c.center.y - nearestY;
+    if (dx*dx + dy*dy <= c.r * c.r){ 
+        return true;
+    }
+
+    return false;
+}
+
+
+
+// Принадлежность фигуры
+
+bool circle_in_circle(const Circle &c, const Circle &c2){
+    double dx = c.center.x - c2.center.x;
+    double dy = c.center.y - c2.center.y;
+    double d = sqrt(dx*dx + dy*dy);
+    return (d + c.r <= c2.r);
+}           
+
+bool square_in_square(const Square &s, const Square &s2) {
+    double sL = s.top.x, sR = s.top.x + s.side;
+    double sT = s.top.y, sB = s.top.y - s.side;
+    double s2L = s2.top.x, s2R = s2.top.x + s2.side;
+    double s2T = s2.top.y, s2B = s2.top.y - s2.side;
+
+    return (sL > s2L) and (sR < s2R) and (sT < s2T) and (sB > s2B);
+}
+
+bool square_in_circle(const Square &s, const Circle &c) {
+    // 4 угла квадрата
+    Point corners[4] = {
+        {s.top.x, s.top.y},
+        {s.top.x + s.side, s.top.y},
+        {s.top.x, s.top.y - s.side},
+        {s.top.x + s.side, s.top.y - s.side}
+    };
+
+    // проверка вершин
+    for (int i = 0; i < 4; i++) {
+        double dx = corners[i].x - c.center.x;
+        double dy = corners[i].y - c.center.y;
+        double dist2 = dx*dx + dy*dy;
+        if (dist2 > c.r * c.r) {
+            return false; // не внутри
+        }
+    }
+    return true; // внутри
+}
+
+bool circle_in_square(const Circle &c, const Square &s) {
+    double s_left = s.top.x;
+    double s_right = s.top.x + s.side;
+    double s_top = s.top.y;
+    double s_bottom = s.top.y - s.side;
+
+    double cx = c.center.x;
+    double cy = c.center.y;
+    double r  = c.r;
+
+    return (cx - r >= s_left) and 
+           (cx + r <= s_right) and 
+           (cy + r <= s_top) and 
+           (cy - r >= s_bottom);
+}
 
 
 
@@ -140,6 +225,11 @@ bool intersection_of_square(const Square &s, const Square &s2){
 
 
 
+
+
+
+
+///*
 int main(){
     
     cout << "Точка:" << endl;
@@ -225,7 +315,56 @@ int main(){
         cout << "Нет" << endl;
     }
 
+    cout << "Круг и квадрат пересекаются?"; 
+    if (intersection_circle_and_square(b, c) == true){
+        cout << "Да" << endl;
+    } else{
+        cout << "Нет" << endl;
+    }
 
+    // принадлежность
+
+    cout << "Круг внутри доп круга? ";
+    if (circle_in_circle(b, b2) == true){
+        cout << "Да" << endl;
+    } else{
+        cout << "Нет" << endl;
+    }
+
+    cout << "Квадрат внутри доп квадрата? ";
+    if (square_in_square(c, c2) == true){
+        cout << "Да" << endl;
+    } else{
+        cout << "Нет" << endl;
+    }
+
+    cout << "Квадрат внутри круга? ";
+    if (square_in_circle(c, b) == true){
+        cout << "Да" << endl;
+    } else{
+        cout << "Нет" << endl;
+    }    
+
+    cout << "Круг внутри квадрата? ";
+    if (circle_in_square(b, c) == true){
+        cout << "Да" << endl;
+    } else{
+        cout << "Нет" << endl;
+    }  
 
 
 }
+//*/
+
+// int main(){
+
+//     cout << "квадрат" << endl;
+//     Square c;
+//     readSquare(c);
+//     Square c2; // доп квадр
+//     cout << "Введите доп квадр" << endl;
+//     readSquare(c2);
+
+//     cout << intersection_of_square(c, c2);
+
+// }
