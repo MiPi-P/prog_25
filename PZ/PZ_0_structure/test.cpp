@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <cmath>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -343,28 +344,14 @@ int main(){
         cout << "Да" << endl;
     } else{
         cout << "Нет" << endl;
-    }    
+    }
 
     cout << "Круг внутри квадрата? ";
     if (circle_in_square(b, c) == true){
         cout << "Да" << endl;
     } else{
         cout << "Нет" << endl;
-    }  
+    }
 
 
 }
-//*/
-
-// int main(){
-
-//     cout << "квадрат" << endl;
-//     Square c;
-//     readSquare(c);
-//     Square c2; // доп квадр
-//     cout << "Введите доп квадр" << endl;
-//     readSquare(c2);
-
-//     cout << intersection_of_square(c, c2);
-
-// }
