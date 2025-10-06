@@ -19,7 +19,37 @@
       "problemMatcher": ["$gcc"],
       "group": { "kind": "build", "isDefault": true },
       "detail": "Builds app.exe from main.cpp and func.cpp"
+    },
+    {
+      "label": "Build Active File (smart)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "if ('${fileBasenameNoExtension}' -eq 'main') { & 'C:\\msys64\\ucrt64\\bin\\g++.exe' -fdiagnostics-color=always -g '${workspaceFolder}\\main.cpp' '${workspaceFolder}\\func.cpp' -o '${workspaceFolder}\\main.exe' } else { & 'C:\\msys64\\ucrt64\\bin\\g++.exe' -fdiagnostics-color=always -g '${file}' -o '${fileDirname}\\${fileBasenameNoExtension}.exe' }"
+      ],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$gcc"],
+      "detail": "Builds active .cpp; links func.cpp when main is active"
+    },
+    {
+      "type": "cppbuild",
+      "label": "Build test.exe (test.cpp)",
+      "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+      "args": [
+        "-fdiagnostics-color=always",
+        "-g",
+        "${workspaceFolder}\\test.cpp",
+        "-o",
+        "${workspaceFolder}\\test.exe"
+      ],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$gcc"],
+      "group": { "kind": "build" },
+      "detail": "Builds test.exe from test.cpp"
     }
   ]
 }
-
