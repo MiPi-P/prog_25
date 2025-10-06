@@ -22,6 +22,15 @@ public:
         }
     }
 
+    MyArray(const MyArray& other){ // rjycnhernjh2
+        size = other.size;
+        data = new int[size];
+        for (int i = 0; i < size; i += 1) {
+            data[i] = other.data[i];
+        }
+    }
+
+
     ~MyArray() { // деконструктор, 
     delete[] data;
     }
@@ -41,7 +50,7 @@ public:
         }
     }
 
-    int getValue(int index){
+    int getValue(int index){ // гетер
         if (0 <= index and index < size){
             return data[index];
         } else {
@@ -57,6 +66,28 @@ public:
         cout << endl;
     }
 
+
+
+    void addValue(int value){
+        if (-100 <= value and value <= 100){
+            int* newData = new int[size + 1];
+
+        for (int i = 0; i < size; i += 1) {
+            newData[i] = data[i];
+        }
+
+        newData[size] = value;
+
+        delete[] data;
+
+        data = newData;
+        size += 1;
+            
+        } else {
+            cout << "Ошибка значения" << endl;
+        }
+    }
+
     
 };
 
@@ -65,5 +96,7 @@ int main(){
     a.print();
     a.setValue(1, 5);
     a.print();
-    cout << a.getValue(1);
+    cout << a.getValue(1) << endl;
+    a.addValue(99);
+    a.print();
 }
