@@ -1,0 +1,141 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <random>
+#include <stdexcept>
+#include <ctime>
+
+// --- утилита: читаем следующий токен, пропуская комментарии PGM ---
+static std::string nextToken(std::istream& in) {
+    std::string tok;
+    while (true) {
+        if (!(in >> tok)) throw std::runtime_error("Неожиданный конец файла при чтении токенов.");
+        if (!tok.empty() && tok[0] == '#') {
+            // Пропустить остаток строки комментария
+            std::string dummy;
+            std::getline(in, dummy);
+            continue;
+        }
+        return tok;
+    }
+}
+
+int main() {
+    const char* in_name  = "photo_PGM.pgm";
+    const char* out_name = "photo_PGM_lvl_1.pgm";
+
+    try {
+        // ---------- ЧТЕНИЕ PGM (P2) ----------
+        std::ifstream fin(in_name, std::ios::in);
+        if (!fin) {
+            std::cerr << "Не удалось открыть входной файл: " << in_name << "\n";
+            return 1;
+        }
+
+        // Магическое число
+        std::string magic = nextToken(fin);
+        if (magic != "P2") {
+            std::cerr << "Ожидался формат P2, найдено: " << magic << "\n";
+            return 1;
+        }
+
+        // Размеры и максимум
+        int width  = std::stoi(nextToken(fin));
+        int height = std::stoi(nextToken(fin));
+        int maxval = std::stoi(nextToken(fin));
+        if (width <= 0 || height <= 0 || maxval <= 0) {
+            std::cerr << "Некорректные параметры заголовка PGM.\n";
+            return 1;
+        }
+
+        const long long N = 1LL * width * height;
+
+        // Динамический одномерный массив для пикселей
+        int* pixels = new int[N];
+
+        // Чтение пикселей
+        for (long long i = 0; i < N; ++i) {
+            pixels[i] = std::stoi(nextToken(fin));
+            if (pixels[i] < 0) pixels[i] = 0;
+            if (pixels[i] > maxval) pixels[i] = maxval;
+        }
+        fin.close();
+
+        // ---------- ДОБАВЛЕНИЕ ШУМА 2% ----------
+        // Кол-во и баланс чёрных/белых
+        long long noise_total = static_cast<long long>(N * 0.02 + 0.5); // округление к ближайшему
+        if (noise_total % 2 == 1) --noise_total;                        // делаем чётным
+        long long per_color = noise_total / 2;
+
+        if (noise_total > 0) {
+            // Индексы пикселей 0..N-1
+            long long* idx = new long long[N];
+            for (long long i = 0; i < N; ++i) idx[i] = i;
+
+            // Генератор случайных чисел
+            std::random_device rd;
+            std::mt19937_64 gen(rd());
+
+            // Частичная перетасовка Фишера–Йетса: выбираем первые noise_total случайных индексов без повторов
+            for (long long i = 0; i < noise_total; ++i) {
+                std::uniform_int_distribution<long long> dist(i, N - 1);
+                long long j = dist(gen);
+                std::swap(idx[i], idx[j]);
+            }
+
+            // Первые per_color -> чёрные (0), следующие per_color -> белые (maxval)
+            for (long long k = 0; k < per_color; ++k) {
+                pixels[idx[k]] = 0;
+            }
+            for (long long k = 0; k < per_color; ++k) {
+                pixels[idx[per_color + k]] = maxval;
+            }
+
+            delete[] idx;
+        }
+
+        // ---------- ЗАПИСЬ РЕЗУЛЬТАТА ----------
+        std::ofstream fout(out_name, std::ios::out);
+        if (!fout) {
+            std::cerr << "Не удалось открыть выходной файл: " << out_name << "\n";
+            delete[] pixels;
+            return 1;
+        }
+
+        // Заголовок P2
+        fout << "P2\n";
+        // Комментарий (не обязателен)
+        std::time_t t = std::time(nullptr);
+        fout << "# salt-and-pepper noise 2% added at " << std::asctime(std::localtime(&t)); // asctime добавляет \n
+
+        fout << width << " " << height << "\n";
+        fout << maxval << "\n";
+
+        // Пиксели: выведем по 16 значений в строке для читабельности
+        int per_line = 16;
+        long long count_in_line = 0;
+        for (long long i = 0; i < N; ++i) {
+            fout << pixels[i];
+            ++count_in_line;
+            if (i + 1 < N) {
+                if (count_in_line == per_line) {
+                    fout << "\n";
+                    count_in_line = 0;
+                } else {
+                    fout << " ";
+                }
+            }
+        }
+        if (count_in_line != 0) fout << "\n";
+
+        fout.close();
+        delete[] pixels;
+
+        std::cout << "Готово. Создан файл: " << out_name << "\n";
+        return 0;
+
+    } catch (const std::exception& e) {
+        std::cerr << "Ошибка: " << e.what() << "\n";
+        return 1;
+    }
+}
