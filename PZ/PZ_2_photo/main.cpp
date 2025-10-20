@@ -10,7 +10,6 @@ using namespace std;
 
 
 
-
 int main(){
 
     ifstream fin; // чтение битого
@@ -38,23 +37,57 @@ int main(){
     }
 
 
-    int lineCount = 0;
+    // int lineCount = 0;
+    // string line;
+    // string trash;
+
+    // int length = 0, height = 0;
+    // while (lineCount != 4) { //копироване начальных строк
+    //     getline(fin, line);
+    //     getline(forig, trash); // 1-ые строки из оригинала
+    //     if (lineCount == 2){
+    //         int space = line.find(" ");
+    //         length = stoi(line.substr(0, space)); // кол-во пикселей по x
+    //         height = stoi(line.substr(space + 1)); // кол-во пикселей по y
+    //         // cout << length << height << endl;
+    //     }
+    //     fout << line << endl;
+    //     lineCount += 1;
+    // }
+
+    // скип 1-ых строк
+    
     string line;
     string trash;
+    int length = 0, height = 0, maxval = 0;
 
-    int length = 0, height = 0;
-    while (lineCount != 4) { //копироване начальных строк
-        getline(fin, line);
-        getline(forig, trash); // 1-ые строки из оригинала
-        if (lineCount == 2){
-            int space = line.find(" ");
-            length = stoi(line.substr(0, space)); // кол-во пикселей по x
-            height = stoi(line.substr(space + 1)); // кол-во пикселей по y
-            // cout << length << height << endl;
+    getline(fin, line); // p2
+    getline(forig, trash);
+    fout << line << endl;
+
+        while (getline(fin, line)) {
+        getline(forig, trash);
+        if (line[0] == '#') {  // комментарий
+            fout << line << endl;
+            continue;
         }
-        fout << line << endl;
-        lineCount += 1;
+
+        //размеры
+        int space = line.find(' ');
+        if (space != string::npos) {
+            length = stoi(line.substr(0, space));
+            height = stoi(line.substr(space + 1));
+            fout << line << endl;
+            break;
+        }
     }
+
+    getline(fin, line); // макс знач
+    getline(forig, trash);
+    maxval = stoi(line);
+    fout << line << endl;
+    
+
 
     vector<int> data;
     vector<int> new_data;
@@ -83,9 +116,9 @@ int main(){
     int error_count = 0;
 
     for (int i = 1; i != size(data) - 1; i += 1) {
-        if (data[i] == 255 or data[i] == 0) {
+        if (data[i] == maxval or data[i] == 0) {
             int j = i + 1;
-            while (data[j] == 255 or data[j] == 0) {
+            while (data[j] == maxval or data[j] == 0) {
                 j += 1;
             }
              
@@ -107,7 +140,9 @@ int main(){
         }
     }
 
-    cout << "Процент неточностей: " << error_count * 100 / (length * height) << "%" << endl;
+    double percent = error_count * 100.0 / (length * height);
+
+    cout << "Процент неточностей: " << percent << "%" << endl;
 
 
 
