@@ -1,18 +1,2 @@
-# IDE
-.idea/
 .vscode/
-
-# CMake build folders
-cmake-build-debug/
-cmake-build-release/
-
-# Build files
-CMakeLists.txt
-*.o
-*.obj
 *.exe
-*.out
-
-# System files
-.DS_Store
-Thumbs.db

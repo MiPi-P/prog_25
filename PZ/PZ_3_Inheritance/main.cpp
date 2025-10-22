@@ -8,8 +8,14 @@
 
 using namespace std;
 
+
+
+
+
+
+
 class MyArray {
-private:
+protected:
     int* data;  // указатель на массив
     int size;   // кол-во элементов
 
@@ -110,7 +116,10 @@ public:
             data[i] -= other.data[i];
         }
     }
-
+};
+// 12333
+class dop : public MyArray {
+public:
 
     // пз наследование
 
@@ -158,21 +167,20 @@ public:
     }
 
 
-
-
 };
 
 int main(){
     system("chcp 65001");
 
 
-    MyArray a(5);
+    dop a(5);
     a.setValue(0, 3);
     a.setValue(1, 5);
     a.setValue(2, 6);
     a.setValue(3, 1);
     a.setValue(4, 9);
     a.print();
+
     cout << a.average() << endl;
     cout << a.median() << endl;
     a.minValue();
