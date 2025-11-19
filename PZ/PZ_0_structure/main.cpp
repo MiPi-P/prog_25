@@ -5,6 +5,7 @@
 using namespace std;
 
 int main() {
+    system("chcp 65001");
     // --- Точка ---
     cout << "Точка (x y):\n";
     Point a;

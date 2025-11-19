@@ -117,12 +117,11 @@ public:
         }
     }
 };
-// 12333
+
+
+// пз наследование
 class dop : public MyArray {
 public:
-
-    // пз наследование
-
 
     // Вычисление среднего значения
     double average() {
