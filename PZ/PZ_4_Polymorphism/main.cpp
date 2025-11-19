@@ -65,7 +65,7 @@ public:
         }
     }
 
-    void print(){
+    virtual void print(){
         for (int i = 0; i != size; i += 1){
             cout << data[i] << " ";
         }
@@ -94,8 +94,6 @@ public:
         }
     }
 
-
-
     // номер 4
     void add(const MyArray& other){ // приплюсовать знач 2-х массивов
         int minSize = min(size, other.size);
@@ -123,9 +121,11 @@ public:
 
 class ArrTxt : public MyArray {
     public:
+    ArrTxt(int n) : MyArray(n) {}
+
     string time = format("{:%d-%m-%Y %H-%M}", chrono::floor<chrono::seconds>(chrono::system_clock::now())) + ".txt";
 
-    void print_txt(){
+    void print() override {
         ofstream fout;
         fout.open(time);
         if (fout.is_open() == false) {
@@ -146,9 +146,11 @@ class ArrTxt : public MyArray {
 
 class ArrCSV : public MyArray {
 public:
+    ArrCSV(int n) : MyArray(n) {}
+
     string time = format("{:%d-%m-%Y %H-%M}", chrono::floor<chrono::seconds>(chrono::system_clock::now())) + ".csv";
 
-    void print_csv(){
+    void print() override {
         ofstream fout;
         fout.open(time);
         if (fout.is_open() == false) {
@@ -168,52 +170,30 @@ public:
 int main(){
     system("chcp 65001");
 
-    ArrCSV a(5);
+    ArrTxt a(5);
     a.setValue(0, 1);
     a.setValue(1, 2);
     a.setValue(2, 3);
     a.setValue(3, 4);
     a.setValue(4, 5);
+    a.print();
+
+
+
+
+    ArrCSV b(5);
+    b.setValue(0, 1);
+    b.setValue(1, 2);
+    b.setValue(2, 3);
+    b.setValue(3, 4);
+    b.setValue(4, 5);
+    b.print();
 
     // string time = format("{:%d-%m-%Y %H-%M}", chrono::floor<chrono::seconds>(chrono::system_clock::now())) + ".txt";
     // cout << time;
 
 
-    //a.print_txt();
-    a.print_csv();
 
-
-
-
-
-    //
-    //
-    // MyArray a(3);
-    // a.print();
-    // a.setValue(0, 1);
-    // a.setValue(1, 2);
-    // a.setValue(2, 3);
-    // a.print();
-    // cout << a.getValue(1) << endl;
-    // a.addValue(4);
-    // a.print();
-    //
-    //
-    // cout << "\n#4\n";
-    // MyArray b(3);
-    // b.setValue(0, 10);
-    // b.setValue(1, 20);
-    // b.setValue(2, 30);
-    // cout << "a = ";
-    // a.print();
-    // cout << "b = " ;
-    // b.print();
-    // cout << "a + b: ";
-    // a.add(b);
-    // a.print();
-    // cout << "a(новый) - b: ";
-    // a.sub(b);
-    // a.print();
 
 
 }
