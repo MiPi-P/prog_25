@@ -66,8 +66,9 @@ public:
     }
 
     virtual void print(){
-        for (int i = 0; i != size; i += 1){
-            cout << data[i] << " ";
+        cout << data[0];
+        for (int i = 1; i != size; i += 1){
+            cout << " " << data[i];
         }
         cout << endl;
     }
@@ -123,9 +124,8 @@ class ArrTxt : public MyArray {
     public:
     ArrTxt(int n) : MyArray(n) {}
 
-    string time = format("{:%d-%m-%Y %H-%M}", chrono::floor<chrono::seconds>(chrono::system_clock::now())) + ".txt";
-
     void print() override {
+        string time = format("{:%d-%m-%Y %H-%M}", chrono::floor<chrono::seconds>(chrono::system_clock::now())) + ".txt";
         ofstream fout;
         fout.open(time);
         if (fout.is_open() == false) {
@@ -133,8 +133,9 @@ class ArrTxt : public MyArray {
             return;
         }
         fout << size << endl;
-        for (int i = 0; i != size; i += 1) {
-            fout << data[i] << " ";
+        fout << data[0];
+        for (int i = 1; i != size; i += 1) {
+            fout << " " << data[i];
         }
         cout << endl;
         fout.close();
@@ -148,9 +149,11 @@ class ArrCSV : public MyArray {
 public:
     ArrCSV(int n) : MyArray(n) {}
 
-    string time = format("{:%d-%m-%Y %H-%M}", chrono::floor<chrono::seconds>(chrono::system_clock::now())) + ".csv";
 
     void print() override {
+
+        string time = format("{:%d-%m-%Y %H-%M}", chrono::floor<chrono::seconds>(chrono::system_clock::now())) + ".csv";
+
         ofstream fout;
         fout.open(time);
         if (fout.is_open() == false) {
@@ -158,8 +161,9 @@ public:
             return;
         }
         fout << size << endl;
-        for (int i = 0; i != size; i += 1) {
-            fout << data[i] << ";";
+        fout << data[0];
+        for (int i = 1; i != size; i += 1) {
+            fout << ";" << data[i];
         }
         cout << endl;
         fout.close();
