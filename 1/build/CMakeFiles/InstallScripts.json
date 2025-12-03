@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/Mi/Documents/c++/prog_25/1/build/cmake_install.cmake",
+		"C:/Users/Mi/Documents/c++/prog_25/1/build/src/cmake_install.cmake",
+		"C:/Users/Mi/Documents/c++/prog_25/1/build/tests/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

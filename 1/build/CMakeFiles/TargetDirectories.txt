@@ -1,0 +1,11 @@
+C:/Users/Mi/Documents/c++/prog_25/1/build/CMakeFiles/test.dir
+C:/Users/Mi/Documents/c++/prog_25/1/build/CMakeFiles/edit_cache.dir
+C:/Users/Mi/Documents/c++/prog_25/1/build/CMakeFiles/rebuild_cache.dir
+C:/Users/Mi/Documents/c++/prog_25/1/build/src/CMakeFiles/HMI2.dir
+C:/Users/Mi/Documents/c++/prog_25/1/build/src/CMakeFiles/test.dir
+C:/Users/Mi/Documents/c++/prog_25/1/build/src/CMakeFiles/edit_cache.dir
+C:/Users/Mi/Documents/c++/prog_25/1/build/src/CMakeFiles/rebuild_cache.dir
+C:/Users/Mi/Documents/c++/prog_25/1/build/tests/CMakeFiles/runTests.dir
+C:/Users/Mi/Documents/c++/prog_25/1/build/tests/CMakeFiles/test.dir
+C:/Users/Mi/Documents/c++/prog_25/1/build/tests/CMakeFiles/edit_cache.dir
+C:/Users/Mi/Documents/c++/prog_25/1/build/tests/CMakeFiles/rebuild_cache.dir
