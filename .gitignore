@@ -7,7 +7,7 @@ cmake-build-debug/
 cmake-build-release/
 
 # Build files
-CMakeLists.txt
+# CMakeLists.txt
 *.o
 *.obj
 *.exe
